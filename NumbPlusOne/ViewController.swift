@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     var numbValue = 0                               // Объявляем переменную numbValue со значением 0
-    var dates: [String] = []                        // Объявляем переменную dates как массив
+    var dates: [String] = ["История изменений:"]                        // Объявляем переменную dates как массив
     
     @IBOutlet weak var numb: UILabel!               // Добавление привязки лейбла к коду
     @IBOutlet weak var numbPlusOneText: UIButton!   // Добавление привязки кнопки к коду
@@ -24,14 +24,17 @@ class ViewController: UIViewController {
         //        При запуске проекта загружаем входные данные:
         
         numb.text = "Значение счётчика: \(numbValue)"   // Изменение названия text на "Значение счётчика: 0"
-        numbPlusOneText.setTitle("+1", for: .normal)    // Изменение название title на "+1"
-        numbPlusOneText.tintColor = .red                // Изменяем цвет шрифта
-        numbMinusOneText.setTitle("-1", for: .normal)   // Изменение название title на "-1"
-        numbMinusOneText.tintColor = .blue              // Изменяем цвет шрифта
+        numbPlusOneText.setTitle("+", for: .normal)    // Изменение название title на "+1"
+        numbPlusOneText.tintColor = .white                // Изменяем цвет шрифта
+        numbPlusOneText.backgroundColor = .red
+        numbMinusOneText.setTitle("-", for: .normal)   // Изменение название title на "-1"
+        numbMinusOneText.tintColor = .white              // Изменяем цвет шрифта
+        numbMinusOneText.backgroundColor = .blue
         resetButton.setImage(UIImage(systemName: "repeat"), for: .normal) // добавляем иконку для кнопки сброса
         resetButton.setTitle("", for: .normal)          // Изменение название title на ""
         resetButton.tintColor = .black                  // Изменяем цвет иконки
-        dateLabelText.text = "История изменений:"       // Изменение названия text на "История изменений:"
+//        dateLabelText.text = "История изменений:"       // Изменение названия text на "История изменений:"
+        dateLabelText.text = dates.joined(separator: "\n \n")
     }
     
     //    Добавляем действие для кнопки (при нажатии на кнопку обновляем переменную numbValue на значение +1)
@@ -50,9 +53,9 @@ class ViewController: UIViewController {
             numbValue -= 1
             numb.text = "Значение счётчика: \(numbValue)"
             recordDate(action: "-1")
-            } else {
-                recordDate(action: "Попытка уменьшить значение счётчика ниже 0")
-            }
+        } else {
+            recordDate(action: "Попытка уменьшить значение счётчика ниже 0")
+        }
         
     }
     
@@ -68,18 +71,18 @@ class ViewController: UIViewController {
     //    Добавляем работу текстового поля с датой и значением
     func recordDate(action: String) {
         
-        var date = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
+        let date = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .medium)
         if action == "Значение сброшено" {
             dates.append("\(date): \n \(action)")
-            } else if action == "Попытка уменьшить значение счётчика ниже 0" {
-                dates.append("\(date): \n \(action)")
-                } else {
-                    dates.append("\(date): \n Значение изменено на \(action)")
-                }
+        } else if action == "Попытка уменьшить значение счётчика ниже 0" {
+            dates.append("\(date): \n \(action)")
+        } else {
+            dates.append("\(date): \n Значение изменено на \(action)")
+        }
         dateLabelText.text = dates.joined(separator: "\n \n")
         let bottom = NSMakeRange(dateLabelText.text.count - 1, 1)
         dateLabelText.scrollRangeToVisible(bottom)
     }
-
+    
 }
 
